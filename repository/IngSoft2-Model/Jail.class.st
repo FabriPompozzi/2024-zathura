@@ -1,5 +1,5 @@
 Class {
-	#name : #HyperGravity,
+	#name : #Jail,
 	#superclass : #Effect,
 	#instVars : [
 		'needsToThrow'
@@ -8,19 +8,19 @@ Class {
 }
 
 { #category : #'instance creation' }
-HyperGravity class >> needsToThrow: aRollingResult [
+Jail class >> needsToThrow: aRollingResult [
 
 	^ self new initializedWith: aRollingResult
 ]
 
 { #category : #initialization }
-HyperGravity >> initializedWith: aNumber [
+Jail >> initializedWith: aNumber [
 
 	needsToThrow := aNumber
 ]
 
 { #category : #playing }
-HyperGravity >> triggeredBy: aSpaceship on: anEffectManager [
+Jail >> triggeredBy: aSpaceship on: anEffectManager [
 
-	aSpaceship changeRollingResultNeededToMoveHG: needsToThrow
+	aSpaceship changeRollingResultNeededToMoveJail: needsToThrow
 ]

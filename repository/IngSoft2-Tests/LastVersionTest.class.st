@@ -1,0 +1,154 @@
+Class {
+	#name : #LastVersionTest,
+	#superclass : #GameTest,
+	#category : #'IngSoft2-Tests'
+}
+
+{ #category : #tests }
+LastVersionTest >> testLV01PlayerGetStuckOnJailTile [
+
+	| aGame aBoard aDie1 someSpaceships |
+	aDie1 := LoadedDie of: { 3. 2. 2 }.
+	someSpaceships := { 'Danny' }.
+
+	aBoard := Board
+		          of: {
+				          Null create.
+				          Null create.
+				          Null create.
+				          (Jail needsToThrow: aDie1 maxRoll).
+				          Null create.
+				          Null create.
+				          Null create }
+		          withUnitsOfMeasurement: (Parsecs with: 10).
+
+
+	aGame := Game
+		         playedBy: someSpaceships
+		         on: aBoard
+		         finishingAfter: 2
+		         rolling: aDie1
+		         usingCardsFrom: (Deck of: { 'card1'. 'card2' }).
+
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 1.
+	aGame playNextTurn.
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 4.
+	aGame playNextTurn.
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 4
+]
+
+{ #category : #tests }
+LastVersionTest >> testLV02PlayerCanLeaveJailWhenRollingTheMaxAmount [
+
+	| aGame aBoard aDie1 someSpaceships |
+	aDie1 := LoadedDie of: { 2. 3. 5 }.
+	someSpaceships := { 'Danny' }.
+
+	aBoard := Board
+		          of: {
+				          Null create.
+				          Null create.
+				          (Jail needsToThrow: aDie1 maxRoll).
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create }
+		          withUnitsOfMeasurement: (Parsecs with: 10).
+
+
+	aGame := Game
+		         playedBy: someSpaceships
+		         on: aBoard
+		         finishingAfter: 2
+		         rolling: aDie1
+		         usingCardsFrom: (Deck of: { 'card1'. 'card2' }).
+
+
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 1.
+	aGame playNextTurn.
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 3.
+	aGame playNextTurn.
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 3.
+	aGame playNextTurn.
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 8
+]
+
+{ #category : #tests }
+LastVersionTest >> testLV03PlayerCanLeaveWhenRollingTheMaxOnADiceRoller [
+
+	| aGame aBoard aDie1 aDie2 aDiceRoller someSpaceships |
+	aDie1 := LoadedDie of: { 2. 2. 2 }.
+	aDie2 := LoadedDie of: { 1. 2. 3 }.
+	aDiceRoller := DiceRoller of: {
+			               aDie1.
+			               aDie2 }.
+	someSpaceships := { 'Danny' }.
+
+	aBoard := Board
+		          of: {
+				          Null create.
+				          Null create.
+				          Null create.
+				          (Jail needsToThrow: aDiceRoller maxRoll).
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create }
+		          withUnitsOfMeasurement: (Parsecs with: 10).
+
+	aGame := Game
+		         playedBy: someSpaceships
+		         on: aBoard
+		         finishingAfter: 2
+		         rolling: aDiceRoller
+		         usingCardsFrom: (Deck of: { 'card1'. 'card2' }).
+
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 1.
+	aGame playNextTurn.
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 4.
+	aGame playNextTurn.
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 4.
+	aGame playNextTurn.
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 9
+]
+
+{ #category : #tests }
+LastVersionTest >> testLV04PlayerCanLeaveJailWhenUsingFreedomCard [
+
+	| aGame aBoard aDie1 someSpaceships aFreedomCard |
+	aDie1 := LoadedDie of: { 3. 2. 2. 5 }.
+	someSpaceships := { 'Danny' }.
+
+	aBoard := Board
+		          of: {
+				          Null create.
+				          Null create.
+				          Null create.
+				          (Jail needsToThrow: aDie1 maxRoll).
+				          Null create.
+				          Null create.
+				          Null create }
+		          withUnitsOfMeasurement: (Parsecs with: 10).
+
+	aFreedomCard := FreedomCard new.
+
+	aGame := Game
+		         playedBy: someSpaceships
+		         on: aBoard
+		         finishingAfter: 2
+		         rolling: aDie1
+		         usingCardsFrom: (Deck of: { aFreedomCard }).
+
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 1.
+	aGame playNextTurn.
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 4.
+	aGame playNextTurn.
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 4.
+	aGame play: aFreedomCard by: 'Danny' targetting: 'Danny'.
+	aGame playNextTurn.
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 6
+]

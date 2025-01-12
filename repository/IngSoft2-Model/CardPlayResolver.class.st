@@ -39,10 +39,10 @@ CardPlayResolver >> initializeWith: aGame [
 ]
 
 { #category : #resolving }
-CardPlayResolver >> resolve: aCardPlayed by: aPlayer targetting: anotherPalyer [
+CardPlayResolver >> resolve: aCardPlayed by: aPlayer targetting: anotherPlayer [
 
 	cardPlayer := aPlayer.
-	cardTarget := anotherPalyer.
+	cardTarget := anotherPlayer.
 	aCardPlayed uses: self
 ]
 
@@ -51,6 +51,14 @@ CardPlayResolver >> resolveACancellationCardPlay: aCard [
 
 	"game cancelTheEffectOf: cardTarget."
 	cardTarget cancelEffectUsing:self.
+	lastCardPlayed := aCard.
+	game removeFromHand: aCard to: cardPlayer
+]
+
+{ #category : #resolving }
+CardPlayResolver >> resolveAFreedomCardPlay: aCard [
+
+	game escapeJailFor: cardPlayer.
 	lastCardPlayed := aCard.
 	game removeFromHand: aCard to: cardPlayer
 ]

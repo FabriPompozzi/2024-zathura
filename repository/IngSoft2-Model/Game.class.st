@@ -120,6 +120,12 @@ Game >> endGameIfPossible [
 	self anySpaceShipAtLastTileAndLap ifTrue: [ hasEnded := true ]
 ]
 
+{ #category : #asserting }
+Game >> escapeJailFor: aSpaceshipName [
+
+	(self spaceshipCalled: aSpaceshipName) freedom
+]
+
 { #category : #playing }
 Game >> giveCardFromDeckTo: aSpaceship [
 
