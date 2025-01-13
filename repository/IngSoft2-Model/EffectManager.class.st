@@ -69,6 +69,12 @@ EffectManager >> moveAllSpaceshipsToFirstPosition [
 ]
 
 { #category : #playing }
+EffectManager >> moveWithoutFuel: aSpaceShip by: anAmountOfTiles [
+
+	board moveWithoutFuel: aSpaceShip by: anAmountOfTiles
+]
+
+{ #category : #playing }
 EffectManager >> repeatLastEffectAppliedOn: aSpaceship [
 
 	lastEffectApplied triggeredBy: aSpaceship on: self

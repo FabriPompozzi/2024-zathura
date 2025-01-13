@@ -156,3 +156,75 @@ LastVersionTest >> testLV04PlayerCanLeaveJailWhenUsingFreedomCard [
 	aGame playNextTurn.
 	self assert: (aGame spaceshipCalled: 'Danny') position equals: 6
 ]
+
+{ #category : #tests }
+LastVersionTest >> testLV05HyperSpaceJumpSendsTheSpaceship4TilesForward [
+
+	| aGame aBoard aDie1 someSpaceships |
+	aDie1 := LoadedDie of: { 3. 2. 2 }.
+	someSpaceships := { 'Danny' }.
+
+	aBoard := Board
+		          of: {
+				          Null create.
+				          Null create.
+				          Null create.
+				          HyperSpaceJump new.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create }
+		          withUnitsOfMeasurement: (Parsecs with: 10).
+
+
+	aGame := Game
+		         playedBy: someSpaceships
+		         on: aBoard
+		         finishingAfter: 2
+		         rolling: aDie1
+		         usingCardsFrom: (Deck of: { 'card1'. 'card2' }).
+
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 1.
+	aGame playNextTurn.
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 8
+]
+
+{ #category : #tests }
+LastVersionTest >> testLV06HyperSpaceJumpDoesntCostAnyExtraFuel [
+
+	| aGame aBoard aDie1 someSpaceships |
+	aDie1 := LoadedDie of: { 3. 2. 2 }.
+	someSpaceships := { 'Danny' }.
+
+	aBoard := Board
+		          of: {
+				          Null create.
+				          Null create.
+				          Null create.
+				          HyperSpaceJump new.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create }
+		          withUnitsOfMeasurement: (Parsecs with: 10).
+
+
+	aGame := Game
+		         playedBy: someSpaceships
+		         on: aBoard
+		         finishingAfter: 2
+		         rolling: aDie1
+		         usingCardsFrom: (Deck of: { 'card1'. 'card2' }).
+
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 1.
+	self
+		assert: (aGame spaceshipCalled: 'Danny') fuelTank currentFuel
+		equals: 6.
+	aGame playNextTurn.
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 8.
+	self
+		assert: (aGame spaceshipCalled: 'Danny') fuelTank currentFuel
+		equals: 3
+]
