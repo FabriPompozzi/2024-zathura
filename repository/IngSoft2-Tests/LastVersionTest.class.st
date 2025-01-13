@@ -5,10 +5,6 @@ Class {
 }
 
 { #category : #tests }
-LastVersionTest >> testBanana [
-]
-
-{ #category : #tests }
 LastVersionTest >> testLV01PlayerGetStuckOnJailTile [
 
 	| aGame aBoard aDie1 someSpaceships |
