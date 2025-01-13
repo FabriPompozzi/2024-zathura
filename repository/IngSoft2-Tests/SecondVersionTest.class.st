@@ -408,7 +408,7 @@ SecondVersionTest >> testSV09SpaceshipSkipsTheirTurnToHaveMaxFuel [
 	self assert: (aGame spaceshipCalled: 'Danny') position equals: 3.
 	self assert: (aGame spaceshipCalled: 'Walter') position equals: 3.
 
-	aGame skipTurnFor: (aGame spaceshipCalled: 'Danny').
+	aGame refuelFor: (aGame spaceshipCalled: 'Danny').
 	aGame playNextTurn.
 
 	self assert: (aGame spaceshipCalled: 'Danny') position equals: 3.

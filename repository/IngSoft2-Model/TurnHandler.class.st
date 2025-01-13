@@ -39,8 +39,8 @@ TurnHandler >> nextSpaceshipTurn [
 
 	| spaceshipTurn |
 	spaceshipTurn := self nextTurn.
-	[ spaceshipTurn turnsToLose > 0 ] whileTrue: [
-		spaceshipTurn losesTurns: -1.
+	[ spaceshipTurn modifiedTurns < 0 ] whileTrue: [
+		spaceshipTurn turnModifier: 1.
 		self changeTurns.
 		spaceshipTurn := self nextTurn ].
 	self changeTurns.

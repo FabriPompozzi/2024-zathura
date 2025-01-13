@@ -181,6 +181,12 @@ Game >> playNextTurn [
 	self endGameIfPossible
 ]
 
+{ #category : #asserting }
+Game >> refuelFor: aSpaceship [
+
+	aSpaceship skipTurnToRefuel
+]
+
 { #category : #removing }
 Game >> removeFromHand: aCard to: aSpaceShip [
 
@@ -219,7 +225,7 @@ Game >> setAnAllianceBewtween: aSpaceShip and: anotherSpaceShip [
 { #category : #asserting }
 Game >> skipTurnFor: aSpaceship [
 
-	aSpaceship skipTurn
+	(self spaceshipCalled: aSpaceship) skipTurn
 ]
 
 { #category : #accessing }

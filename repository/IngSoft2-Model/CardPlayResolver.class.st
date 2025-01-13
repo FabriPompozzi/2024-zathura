@@ -80,6 +80,14 @@ CardPlayResolver >> resolveARepeatCardPlay: aCard [
 ]
 
 { #category : #resolving }
+CardPlayResolver >> resolveASkipCardPlay: aCard [
+
+	game skipTurnFor: cardTarget.
+	lastCardPlayed := aCard.
+	game removeFromHand: aCard to: cardPlayer
+]
+
+{ #category : #resolving }
 CardPlayResolver >> resolveAnAccelerationCardPlay:aCard [
 	
 	

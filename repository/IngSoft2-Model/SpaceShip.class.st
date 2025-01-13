@@ -5,11 +5,11 @@ Class {
 		'name',
 		'position',
 		'lap',
-		'turnsToLose',
 		'ally',
 		'fuelTank',
 		'needsToThrowHG',
-		'needsToThrowJail'
+		'needsToThrowJail',
+		'modifiedTurns'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -39,7 +39,7 @@ SpaceShip >> applyPenaltyForEmptyFuelTank [
 
 	position := 1.
 	fuelTank refuelToMax.
-	self losesTurns: 2
+	self turnModifier: -2
 ]
 
 { #category : #playing }
@@ -100,7 +100,7 @@ SpaceShip >> initialize: aName withMaxFuel: anAmount [
 	name := aName.
 	position := 1.
 	lap := 1.
-	turnsToLose := 0.
+	modifiedTurns := 0.
 	needsToThrowHG := 0.
 	needsToThrowJail := 0.
 	fuelTank := FuelTank withMaxFuel: anAmount.
@@ -119,10 +119,10 @@ SpaceShip >> lap [
 	^ lap
 ]
 
-{ #category : #playing }
-SpaceShip >> losesTurns: amountOfTurns [
+{ #category : #accessing }
+SpaceShip >> modifiedTurns [
 
-	turnsToLose := turnsToLose + amountOfTurns
+	^ modifiedTurns
 ]
 
 { #category : #playing }
@@ -181,12 +181,19 @@ SpaceShip >> setAllyToNil [
 { #category : #playing }
 SpaceShip >> skipTurn [
 
-	self losesTurns: 1.
+	self turnModifier: -1.
+
+]
+
+{ #category : #playing }
+SpaceShip >> skipTurnToRefuel [
+
+	self turnModifier: -1.
 	fuelTank refuelToMax
 ]
 
-{ #category : #accessing }
-SpaceShip >> turnsToLose [
+{ #category : #playing }
+SpaceShip >> turnModifier: amountOfTurns [
 
-	^ turnsToLose
+	modifiedTurns := modifiedTurns + amountOfTurns
 ]
