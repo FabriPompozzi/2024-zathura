@@ -7,6 +7,6 @@
 ```smalltalk
 Metacello new
    baseline: 'IngSoft2';
-   githubUser: 'ThiagoFantino' project: '2024-zathura' commitish: 'master' path: 'repository';
+   githubUser: 'FabriPompozzi' project: '2024-zathura' commitish: 'master' path: 'repository';
    load: 'development'.
 ```
