@@ -88,6 +88,14 @@ CardPlayResolver >> resolveARepeatCardPlay: aCard [
 ]
 
 { #category : #resolving }
+CardPlayResolver >> resolveAReverseCardPlay: aCard [
+
+	game reverseTurns.
+	lastCardPlayed := aCard.
+	game removeFromHand: aCard to: cardPlayer
+]
+
+{ #category : #resolving }
 CardPlayResolver >> resolveASkipCardPlay: aCard [
 
 	game skipTurnFor: cardTarget.

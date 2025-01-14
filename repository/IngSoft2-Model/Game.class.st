@@ -206,6 +206,12 @@ Game >> repeatLastEffectAppliedOn: aSpaceshipName [
 	effectManager repeatLastEffectAppliedOn: (self spaceshipCalled: aSpaceshipName).
 ]
 
+{ #category : #asserting }
+Game >> reverseTurns [
+
+	turnHandler reverseTurns
+]
+
 { #category : #playing }
 Game >> rollModifierFor: aSpaceShip [
 
@@ -251,6 +257,12 @@ Game >> spaceShipsPositionsRanking [
 Game >> spaceshipCalled: aName [
 
 	^ spaceships detect: [ :spaceship | spaceship name = aName ]
+]
+
+{ #category : #testing }
+Game >> turnHandler [
+
+	^ turnHandler
 ]
 
 { #category : #asserting }

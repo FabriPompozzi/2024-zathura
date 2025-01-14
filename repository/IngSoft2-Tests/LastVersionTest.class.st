@@ -384,3 +384,180 @@ LastVersionTest >> testLV09DoubleCardGivesCurrentSpaceshipAnExtraTurn [
 
 
 ]
+
+{ #category : #tests }
+LastVersionTest >> testLV10DoubleCardCanBeUsedTwiceWithRedoCard [
+
+	| aGame aBoard aDie1 someSpaceships aDoubleCard aRedoCard aDeck |
+	aDie1 := LoadedDie of: { 3. 3. 2. 1. 3. 5 }.
+	someSpaceships := { 'Danny'. 'Walter'. 'Joseph' }.
+
+	aDoubleCard := DoubleCard new.
+	aRedoCard := RedoCard new.
+
+	aDeck := LoadedDeck of: {
+			         aDoubleCard.
+			         aRedoCard.
+			         aDoubleCard.
+			         aRedoCard.
+			         aRedoCard.
+						aDoubleCard. }.
+
+	aBoard := Board
+		          of: {
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create }
+		          withUnitsOfMeasurement: (Parsecs with: 10).
+
+
+	aGame := Game
+		         playedBy: someSpaceships
+		         on: aBoard
+		         finishingAfter: 2
+		         rolling: aDie1
+		         usingCardsFrom: aDeck.
+
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 1.
+	self assert: (aGame spaceshipCalled: 'Walter') position equals: 1.
+	self assert: (aGame spaceshipCalled: 'Joseph') position equals: 1.
+
+	aGame playNextTurn.
+	aGame play: aDoubleCard by:'Walter' targetting: 'Walter'.
+	aGame playNextTurn.
+	aGame playNextTurn.
+
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 4.
+	self assert: (aGame spaceshipCalled: 'Walter') position equals: 6.
+	self assert: (aGame spaceshipCalled: 'Joseph') position equals: 1.
+
+	aGame play:aRedoCard by:'Joseph' targetting:'Joseph'.
+	aGame playNextTurn.
+	aGame playNextTurn.
+
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 4.
+	self assert: (aGame spaceshipCalled: 'Walter') position equals: 6.
+	self assert: (aGame spaceshipCalled: 'Joseph') position equals: 5
+]
+
+{ #category : #tests }
+LastVersionTest >> testLV11ReverseCardReversesTurns [
+
+	| aGame aBoard aDie1 someSpaceships aReverseCard |
+	aDie1 := LoadedDie of: { 3. 2. 2. 1 }.
+	someSpaceships := { 'Danny'. 'Walter'. 'Joseph' }.
+
+	aReverseCard := ReverseCard new.
+
+	aBoard := Board
+		          of: {
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create }
+		          withUnitsOfMeasurement: (Parsecs with: 10).
+
+
+	aGame := Game
+		         playedBy: someSpaceships
+		         on: aBoard
+		         finishingAfter: 2
+		         rolling: aDie1
+		         usingCardsFrom: (Deck of: { aReverseCard }).
+
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 1.
+	self assert: (aGame spaceshipCalled: 'Walter') position equals: 1.
+	self assert: (aGame spaceshipCalled: 'Joseph') position equals: 1.
+
+	aGame playNextTurn.
+	aGame play: aReverseCard by: 'Danny' targetting: 'All'.
+
+	self assert: aGame turnHandler spaceships first name equals: 'Danny'.
+	self
+		assert: aGame turnHandler spaceships second name
+		equals: 'Joseph'.
+	self assert: aGame turnHandler spaceships third name equals: 'Walter'.
+
+	aGame playNextTurn.
+	aGame playNextTurn.
+	aGame playNextTurn.
+
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 6.
+	self assert: (aGame spaceshipCalled: 'Walter') position equals: 2.
+	self assert: (aGame spaceshipCalled: 'Joseph') position equals: 3
+]
+
+{ #category : #tests }
+LastVersionTest >> testLV12ReverseCardCanBeUsedTwiceWithRedoCard [
+
+	| aGame aBoard aDie1 someSpaceships aReverseCard aRedoCard aDeck |
+	aDie1 := LoadedDie of: { 3. 2. 2. 1 }.
+	someSpaceships := { 'Danny'. 'Walter'. 'Joseph' }.
+
+	aReverseCard := ReverseCard new.
+	aRedoCard := RedoCard new.
+	aDeck := LoadedDeck of: {
+			         aReverseCard.
+			         aRedoCard.
+			         aReverseCard.
+			         aRedoCard.
+			         aReverseCard.
+			         aRedoCard }.
+
+	aBoard := Board
+		          of: {
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create }
+		          withUnitsOfMeasurement: (Parsecs with: 10).
+
+
+	aGame := Game
+		         playedBy: someSpaceships
+		         on: aBoard
+		         finishingAfter: 2
+		         rolling: aDie1
+		         usingCardsFrom: aDeck.
+
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 1.
+	self assert: (aGame spaceshipCalled: 'Walter') position equals: 1.
+	self assert: (aGame spaceshipCalled: 'Joseph') position equals: 1.
+
+	aGame playNextTurn.
+	aGame play: aReverseCard by: 'Danny' targetting: 'All'.
+
+	self assert: aGame turnHandler spaceships first name equals: 'Danny'.
+	self
+		assert: aGame turnHandler spaceships second name
+		equals: 'Joseph'.
+	self assert: aGame turnHandler spaceships third name equals: 'Walter'.
+
+	aGame playNextTurn.
+	aGame playNextTurn.
+	aGame play: aRedoCard by: 'Joseph' targetting: 'all'.
+	aGame playNextTurn.
+
+	self assert: aGame turnHandler spaceships first name equals: 'Danny'.
+	self assert: aGame turnHandler spaceships second name equals: 'Walter'.
+	self assert: aGame turnHandler spaceships third name equals: 'Joseph'.
+
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 6.
+	self assert: (aGame spaceshipCalled: 'Walter') position equals: 1.
+	self assert: (aGame spaceshipCalled: 'Joseph') position equals: 4
+]
