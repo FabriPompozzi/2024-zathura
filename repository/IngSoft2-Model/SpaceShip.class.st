@@ -61,6 +61,13 @@ SpaceShip >> decreaseFuelBy: amountOfFuel [
 ]
 
 { #category : #playing }
+SpaceShip >> extraTurn [
+
+	self turnModifier: 1.
+
+]
+
+{ #category : #playing }
 SpaceShip >> freedom [
 
 	needsToThrowJail := 0

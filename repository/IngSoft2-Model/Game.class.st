@@ -127,6 +127,12 @@ Game >> escapeJailFor: aSpaceshipName [
 	(self spaceshipCalled: aSpaceshipName) freedom
 ]
 
+{ #category : #asserting }
+Game >> extraTurnFor: aSpaceship [
+
+	(self spaceshipCalled: aSpaceship) extraTurn
+]
+
 { #category : #playing }
 Game >> giveCardFromDeckTo: aSpaceship [
 

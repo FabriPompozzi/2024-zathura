@@ -56,6 +56,14 @@ CardPlayResolver >> resolveACancellationCardPlay: aCard [
 ]
 
 { #category : #resolving }
+CardPlayResolver >> resolveADoubleCardPlay: aCard [
+
+	game extraTurnFor: cardTarget.
+	lastCardPlayed := aCard.
+	game removeFromHand: aCard to: cardPlayer
+]
+
+{ #category : #resolving }
 CardPlayResolver >> resolveAFreedomCardPlay: aCard [
 
 	game escapeJailFor: cardPlayer.
