@@ -7,9 +7,9 @@ Class {
 		'lap',
 		'ally',
 		'fuelTank',
-		'needsToThrowHG',
-		'needsToThrowJail',
-		'modifiedTurns'
+		'modifiedTurns',
+		'needsToThrowToEscapeJail',
+		'needsToThrowToEscapeHyperGravity'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -43,15 +43,15 @@ SpaceShip >> applyPenaltyForEmptyFuelTank [
 ]
 
 { #category : #playing }
-SpaceShip >> changeRollingResultNeededToMoveHG: aNumber [
+SpaceShip >> changeRollingResultNeededToEscapeHiperGravity: aNumber [
 
-	needsToThrowHG := aNumber
+	needsToThrowToEscapeHyperGravity := aNumber
 ]
 
 { #category : #playing }
-SpaceShip >> changeRollingResultNeededToMoveJail: aNumber [
+SpaceShip >> changeRollingResultNeededToEscapeJail: aNumber [
 
-	needsToThrowJail := aNumber
+	needsToThrowToEscapeJail := aNumber
 ]
 
 { #category : #playing }
@@ -61,16 +61,15 @@ SpaceShip >> decreaseFuelBy: amountOfFuel [
 ]
 
 { #category : #playing }
-SpaceShip >> extraTurn [
+SpaceShip >> escapeJail [
 
-	self turnModifier: 1.
-
+	needsToThrowToEscapeJail := 0
 ]
 
 { #category : #playing }
-SpaceShip >> freedom [
+SpaceShip >> extraTurn [
 
-	needsToThrowJail := 0
+	self turnModifier: 1
 ]
 
 { #category : #accessing }
@@ -108,8 +107,8 @@ SpaceShip >> initialize: aName withMaxFuel: anAmount [
 	position := 1.
 	lap := 1.
 	modifiedTurns := 0.
-	needsToThrowHG := 0.
-	needsToThrowJail := 0.
+	needsToThrowToEscapeHyperGravity := 0.
+	needsToThrowToEscapeJail := 0.
 	fuelTank := FuelTank withMaxFuel: anAmount.
 	ally := nil
 ]
@@ -135,7 +134,8 @@ SpaceShip >> modifiedTurns [
 { #category : #playing }
 SpaceShip >> movePositionBy: aNumber lapBy: quantityOfLapsToMove neededFuel: aFuelAmount [
 
-	(needsToThrowHG = 0 and: [ needsToThrowJail = 0 ]) ifFalse: [ ^ self ].
+	(needsToThrowToEscapeHyperGravity = 0 and: [
+		 needsToThrowToEscapeJail = 0 ]) ifFalse: [ ^ self ].
 	self decreaseFuelBy: aFuelAmount.
 
 	fuelTank isEmpty
@@ -171,11 +171,12 @@ SpaceShip >> rollDiceUsing: aDiceRoller [
 
 	| rolledNumber |
 	rolledNumber := aDiceRoller roll.
-	((needsToThrowHG = 0 or: [ rolledNumber = needsToThrowHG ]) and: [
-		 needsToThrowJail = 0 or: rolledNumber = needsToThrowJail ])
-		ifTrue: [
-			needsToThrowHG := 0.
-			needsToThrowJail := 0 ].
+	((needsToThrowToEscapeHyperGravity = 0 or: [
+		  rolledNumber = needsToThrowToEscapeHyperGravity ]) and: [
+		 needsToThrowToEscapeJail = 0 or:
+			 rolledNumber = needsToThrowToEscapeJail ]) ifTrue: [
+		needsToThrowToEscapeHyperGravity := 0.
+		needsToThrowToEscapeJail := 0 ].
 	^ rolledNumber
 ]
 
@@ -188,8 +189,7 @@ SpaceShip >> setAllyToNil [
 { #category : #playing }
 SpaceShip >> skipTurn [
 
-	self turnModifier: -1.
-
+	self turnModifier: -1
 ]
 
 { #category : #playing }

@@ -7,5 +7,5 @@ Class {
 { #category : #delegating }
 FreedomCard >> uses: cardPlayResolver [
 
-	cardPlayResolver resolveAFreedomCardPlay:self
+	cardPlayResolver resolveAFreedomCardPlay: self
 ]

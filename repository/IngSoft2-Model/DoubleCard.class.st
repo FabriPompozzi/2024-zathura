@@ -7,5 +7,5 @@ Class {
 { #category : #delegating }
 DoubleCard >> uses: cardPlayResolver [
 
-	cardPlayResolver resolveADoubleCardPlay:self
+	cardPlayResolver resolveADoubleCardPlay: self
 ]

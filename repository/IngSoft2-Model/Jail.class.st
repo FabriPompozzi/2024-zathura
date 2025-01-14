@@ -22,5 +22,5 @@ Jail >> initializedWith: aNumber [
 { #category : #playing }
 Jail >> triggeredBy: aSpaceship on: anEffectManager [
 
-	aSpaceship changeRollingResultNeededToMoveJail: needsToThrow
+	aSpaceship changeRollingResultNeededToEscapeJail: needsToThrow
 ]

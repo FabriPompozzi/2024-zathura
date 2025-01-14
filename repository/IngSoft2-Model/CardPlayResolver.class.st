@@ -18,18 +18,20 @@ CardPlayResolver class >> with: aGame [
 
 { #category : #resolving }
 CardPlayResolver >> cancelAnAccelerationCard: aCard [
+
 	game cancelTheEffectOf: aCard
 ]
 
 { #category : #resolving }
 CardPlayResolver >> cancelAnAllyCard: aCard [
 
-game setAllyToNil.
+	game setAllyToNil
 ]
 
 { #category : #resolving }
 CardPlayResolver >> cancelAnOverloadCard: aCard [
-	game cancelTheEffectOf:aCard
+
+	game cancelTheEffectOf: aCard
 ]
 
 { #category : #initialization }
@@ -49,8 +51,7 @@ CardPlayResolver >> resolve: aCardPlayed by: aPlayer targetting: anotherPlayer [
 { #category : #resolving }
 CardPlayResolver >> resolveACancellationCardPlay: aCard [
 
-	"game cancelTheEffectOf: cardTarget."
-	cardTarget cancelEffectUsing:self.
+	cardTarget cancelEffectUsing: self.
 	lastCardPlayed := aCard.
 	game removeFromHand: aCard to: cardPlayer
 ]

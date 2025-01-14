@@ -7,5 +7,5 @@ Class {
 { #category : #delegating }
 SkipCard >> uses: cardPlayResolver [
 
-	cardPlayResolver resolveASkipCardPlay:self
+	cardPlayResolver resolveASkipCardPlay: self
 ]

@@ -7,5 +7,5 @@ Class {
 { #category : #delegating }
 ReverseCard >> uses: cardPlayResolver [
 
-	cardPlayResolver resolveAReverseCardPlay:self
+	cardPlayResolver resolveAReverseCardPlay: self
 ]
