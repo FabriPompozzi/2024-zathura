@@ -53,8 +53,9 @@ Game class >> playedBy: someSpaceShips on: aBoard finishingAfter: laps rolling: 
 ]
 
 { #category : #accessing }
-Game >> addNewCard: aCard to:aPlayer [
-	(self cardsHandOf: aPlayer)  addToHand: aCard.
+Game >> addNewCard: aCard to: aPlayer [
+
+	(self cardsHandOf: aPlayer) addToHand: aCard
 ]
 
 { #category : #accessing }

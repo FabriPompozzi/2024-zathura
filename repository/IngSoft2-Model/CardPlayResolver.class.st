@@ -88,13 +88,12 @@ CardPlayResolver >> resolveASkipCardPlay: aCard [
 ]
 
 { #category : #resolving }
-CardPlayResolver >> resolveAnAccelerationCardPlay:aCard [
-	
-	
+CardPlayResolver >> resolveAnAccelerationCardPlay: aCard [
+
 	game assertIsTurnOf: cardPlayer.
 	game applyToAllSpaceShips: aCard.
 	lastCardPlayed := aCard.
-	game removeFromHand: aCard to: cardPlayer.
+	game removeFromHand: aCard to: cardPlayer
 ]
 
 { #category : #resolving }
