@@ -561,3 +561,124 @@ LastVersionTest >> testLV12ReverseCardCanBeUsedTwiceWithRedoCard [
 	self assert: (aGame spaceshipCalled: 'Walter') position equals: 1.
 	self assert: (aGame spaceshipCalled: 'Joseph') position equals: 4
 ]
+
+{ #category : #tests }
+LastVersionTest >> testLV13SkipCardCanBeStackedWithItself [
+
+	| aGame aBoard aDie1 someSpaceships aSkipCard aRedoCard aDeck |
+	aDie1 := LoadedDie of: { 3. 3. 2. 1. 2. 5. }.
+	someSpaceships := { 'Danny'. 'Walter'. 'Joseph' }.
+
+	aSkipCard := SkipCard new.
+	aRedoCard := RedoCard new.
+
+	aDeck := LoadedDeck of: {
+			         aSkipCard.
+			         aRedoCard.
+			         aSkipCard.
+			         aRedoCard.
+			         aRedoCard.
+						aSkipCard. }.
+
+	aBoard := Board
+		          of: {
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create }
+		          withUnitsOfMeasurement: (Parsecs with: 10).
+
+
+	aGame := Game
+		         playedBy: someSpaceships
+		         on: aBoard
+		         finishingAfter: 2
+		         rolling: aDie1
+		         usingCardsFrom: aDeck.
+
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 1.
+	self assert: (aGame spaceshipCalled: 'Walter') position equals: 1.
+	self assert: (aGame spaceshipCalled: 'Joseph') position equals: 1.
+
+	aGame playNextTurn.
+	aGame play: aSkipCard by:'Danny' targetting: 'Walter'.
+	aGame play: aRedoCard by:'Danny' targetting: 'Walter'.
+	aGame playNextTurn.
+	aGame playNextTurn.
+
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 6.
+	self assert: (aGame spaceshipCalled: 'Walter') position equals: 1.
+	self assert: (aGame spaceshipCalled: 'Joseph') position equals: 4.
+
+	aGame playNextTurn.
+	aGame playNextTurn.
+
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 8.
+	self assert: (aGame spaceshipCalled: 'Walter') position equals: 1.
+	self assert: (aGame spaceshipCalled: 'Joseph') position equals: 5
+]
+
+{ #category : #tests }
+LastVersionTest >> testLV14DoubleCardCanBeStackedWithItself [
+
+	| aGame aBoard aDie1 someSpaceships aDoubleCard aRedoCard aDeck |
+	aDie1 := LoadedDie of: { 3. 3. 2. 1. 3. 2. 5 }.
+	someSpaceships := { 'Danny'. 'Walter'. 'Joseph' }.
+
+	aDoubleCard := DoubleCard new.
+	aRedoCard := RedoCard new.
+
+	aDeck := LoadedDeck of: {
+			         aDoubleCard.
+			         aRedoCard.
+			         aDoubleCard.
+			         aRedoCard.
+			         aRedoCard.
+						aDoubleCard. }.
+
+	aBoard := Board
+		          of: {
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create.
+				          Null create }
+		          withUnitsOfMeasurement: (Parsecs with: 10).
+
+
+	aGame := Game
+		         playedBy: someSpaceships
+		         on: aBoard
+		         finishingAfter: 2
+		         rolling: aDie1
+		         usingCardsFrom: aDeck.
+
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 1.
+	self assert: (aGame spaceshipCalled: 'Walter') position equals: 1.
+	self assert: (aGame spaceshipCalled: 'Joseph') position equals: 1.
+
+	aGame playNextTurn.
+	aGame play: aDoubleCard by:'Walter' targetting: 'Walter'.
+	aGame play: aRedoCard by:'Walter' targetting: 'Walter'.
+	aGame playNextTurn.
+	aGame playNextTurn.
+	aGame playNextTurn.
+
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 4.
+	self assert: (aGame spaceshipCalled: 'Walter') position equals: 7.
+	self assert: (aGame spaceshipCalled: 'Joseph') position equals: 1.
+
+	aGame playNextTurn.
+	aGame playNextTurn.
+
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 6.
+	self assert: (aGame spaceshipCalled: 'Walter') position equals: 7.
+	self assert: (aGame spaceshipCalled: 'Joseph') position equals: 4
+]
