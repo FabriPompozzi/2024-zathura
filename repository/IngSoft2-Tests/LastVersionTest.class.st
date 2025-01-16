@@ -190,7 +190,7 @@ LastVersionTest >> testLV05HyperSpaceJumpSendsTheSpaceship4TilesForward [
 LastVersionTest >> testLV06HyperSpaceJumpDoesntCostAnyExtraFuel [
 
 	| aGame aBoard aDie1 someSpaceships |
-	aDie1 := LoadedDie of: { 3. 2. 2 }.
+	aDie1 := LoadedDie of: { 3. 2. 2. 4 }.
 	someSpaceships := { 'Danny' }.
 
 	aBoard := Board
@@ -217,12 +217,12 @@ LastVersionTest >> testLV06HyperSpaceJumpDoesntCostAnyExtraFuel [
 	self assert: (aGame spaceshipCalled: 'Danny') position equals: 1.
 	self
 		assert: (aGame spaceshipCalled: 'Danny') fuelTank currentFuel
-		equals: 6.
+		equals: 8.
 	aGame playNextTurn.
 	self assert: (aGame spaceshipCalled: 'Danny') position equals: 8.
 	self
 		assert: (aGame spaceshipCalled: 'Danny') fuelTank currentFuel
-		equals: 3
+		equals: 5
 ]
 
 { #category : #tests }
