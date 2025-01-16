@@ -678,3 +678,67 @@ LastVersionTest >> testLV14DoubleCardCanBeStackedWithItself [
 	self assert: (aGame spaceshipCalled: 'Walter') position equals: 7.
 	self assert: (aGame spaceshipCalled: 'Joseph') position equals: 4
 ]
+
+{ #category : #tests }
+LastVersionTest >> testLV15RandomBoardDistributionWithNewTilesAndRandomDice [
+
+	| aGame aBoard aDie1 unitsToMove someSpaceships effectDistribution randomCollection aDie2 aDiceRoller |
+	aDie1 := Die of: 6.
+	aDie2 := Die of: 3.
+	unitsToMove := OrderedCollection
+		               with: (LightYear with: 9)
+		               with: (Parsecs with: 4).
+
+	aDiceRoller := DiceRoller of: {
+			               aDie1.
+			               aDie2 }.
+	effectDistribution := EffectDistribution with: {
+			                      (ProbabilityEffectTile
+				                       with: Null new
+				                       and: 0.20).
+			                      (ProbabilityEffectTile
+				                       with: CardGiver new
+				                       and: 0.10).
+			                      (ProbabilityEffectTile
+				                       with: BlackHole new
+				                       and: 0.20).
+			                      (ProbabilityEffectTile
+				                       with: (HyperGravity needsToThrow: 3)
+				                       and: 0.20).
+			                      (ProbabilityEffectTile
+				                       with: (MoonWalk backwardDistance: 3)
+				                       and: 0.10).
+			                      (ProbabilityEffectTile
+				                       with: (HyperJump of: unitsToMove)
+				                       and: 0.08).
+			                      (ProbabilityEffectTile
+				                       with: AtomicBomb new
+				                       and: 0.02).
+			                      (ProbabilityEffectTile
+				                       with:
+				                       (Jail needsToThrow: aDiceRoller maxRoll)
+				                       and: 0.05).
+			                      (ProbabilityEffectTile
+				                       with: HyperSpaceJump new
+				                       and: 0.05) }.
+
+
+	randomCollection := effectDistribution randomCollectionWith: 5.
+
+	aBoard := Board
+		          of: randomCollection
+		          withUnitsOfMeasurement: (Parsecs with: 10).
+
+	someSpaceships := { 'Danny'. 'Walter' }.
+
+	aGame := Game
+		         playedBy: someSpaceships
+		         on: aBoard
+		         finishingAfter: 2
+		         rolling: aDiceRoller
+		         usingCardsFrom: (Deck of: { 'card1'. 'card2' }).
+
+	self playUntilFinished: aGame.
+
+	self assert: aGame hasEnded
+]
