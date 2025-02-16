@@ -20,7 +20,7 @@ EffectManager class >> usedIn: aGame with: aBoard affecting: someShips [
 EffectManager >> applyEffectOnLandingShip: aSpaceship [
 
 	| effectToApply |
-	effectToApply := board effectToApplyTo: aSpaceship .
+	effectToApply := board effectToApplyTo: aSpaceship.
 	lastEffectApplied := effectToApply.
 	effectToApply triggeredBy: aSpaceship on: self
 ]
@@ -66,6 +66,12 @@ EffectManager >> move: aSpaceship jumping: aQuantityOfParsec [
 EffectManager >> moveAllSpaceshipsToFirstPosition [
 
 	board moveAllSpaceshipsToFirstPosition: spaceships
+]
+
+{ #category : #playing }
+EffectManager >> moveWithoutFuel: aSpaceShip by: anAmountOfTiles [
+
+	board moveWithoutFuel: aSpaceShip by: anAmountOfTiles
 ]
 
 { #category : #playing }

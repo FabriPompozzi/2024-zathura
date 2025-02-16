@@ -66,9 +66,9 @@ SpaceShipTest >> testLostTurnsCanBeStacked [
 
 	| aSpaceShip |
 	aSpaceShip := SpaceShip named: 'Danny' withMaxFuel: 10.
-	self assert: aSpaceShip turnsToLose equals: 0.
-	aSpaceShip losesTurns: 2.
-	self assert: aSpaceShip turnsToLose equals: 2.
-	aSpaceShip losesTurns: 3.
-	self assert: aSpaceShip turnsToLose equals: 5
+	self assert: aSpaceShip modifiedTurns equals: 0.
+	aSpaceShip turnModifier: -2.
+	self assert: aSpaceShip modifiedTurns equals: -2.
+	aSpaceShip turnModifier: -3.
+	self assert: aSpaceShip modifiedTurns equals: -5
 ]

@@ -27,9 +27,7 @@ Board class >> of: tiles withUnitsOfMeasurement: units [
 
 	self isValid: tiles.
 	self assertValidQuantityOf: units valueAsParsecs.
-	^ self new
-		  initializeOf: tiles
-		  withDistance: units
+	^ self new initializeOf: tiles withDistance: units
 ]
 
 { #category : #initialization }
@@ -42,8 +40,7 @@ Board >> amountOfTiles [
 Board >> calculateLapToMoveWhen: aSpaceship advances: anAmountOfTilesToMove [
 
 	| tilesSinceBeginning |
-	tilesSinceBeginning := (aSpaceship position)
-	                       + anAmountOfTilesToMove
+	tilesSinceBeginning := aSpaceship position + anAmountOfTilesToMove
 	                       + (aSpaceship lap - 1 * self amountOfTiles).
 	^ tilesSinceBeginning - 1 // self amountOfTiles + 1
 ]
@@ -55,8 +52,7 @@ Board >> calculatePositionToMoveWhen: aSpaceship moves: anAmountOfTilesToMove [
 	lapAfterMovement := self
 		                    calculateLapToMoveWhen: aSpaceship
 		                    advances: anAmountOfTilesToMove.
-	tilesSinceBeginning := (aSpaceship position)
-	                       + anAmountOfTilesToMove
+	tilesSinceBeginning := aSpaceship position + anAmountOfTilesToMove
 	                       + (aSpaceship lap - 1 * self amountOfTiles).
 	newPosition := tilesSinceBeginning % self amountOfTiles.
 	(lapAfterMovement < 1 or: lapAfterMovement > self laps) ifTrue: [
@@ -68,7 +64,8 @@ Board >> calculatePositionToMoveWhen: aSpaceship moves: anAmountOfTilesToMove [
 
 { #category : #initialization }
 Board >> effectToApplyTo: aSpaceship [
-	^ tiles at: (aSpaceship position).
+
+	^ tiles at: aSpaceship position
 ]
 
 { #category : #playing }
@@ -127,4 +124,22 @@ Board >> moveAllSpaceshipsToFirstPosition: allSpaceShips [
 			movePositionBy: 1 - spaceship position
 			lapBy: 0
 			neededFuel: 0 ]
+]
+
+{ #category : #accessing }
+Board >> moveWithoutFuel: aSpaceship by: anAmountOfTilesToMove [
+
+	| positionToMove lapsMoved newLap |
+	newLap := self
+		          calculateLapToMoveWhen: aSpaceship
+		          advances: anAmountOfTilesToMove.
+	lapsMoved := (newLap min: laps + 1 max: 1) - aSpaceship lap.
+	positionToMove := self
+		                  calculatePositionToMoveWhen: aSpaceship
+		                  moves: anAmountOfTilesToMove.
+
+	aSpaceship
+		movePositionBy: positionToMove
+		lapBy: lapsMoved
+		neededFuel: 0
 ]

@@ -18,18 +18,20 @@ CardPlayResolver class >> with: aGame [
 
 { #category : #resolving }
 CardPlayResolver >> cancelAnAccelerationCard: aCard [
+
 	game cancelTheEffectOf: aCard
 ]
 
 { #category : #resolving }
 CardPlayResolver >> cancelAnAllyCard: aCard [
 
-game setAllyToNil.
+	game setAllyToNil
 ]
 
 { #category : #resolving }
 CardPlayResolver >> cancelAnOverloadCard: aCard [
-	game cancelTheEffectOf:aCard
+
+	game cancelTheEffectOf: aCard
 ]
 
 { #category : #initialization }
@@ -39,18 +41,33 @@ CardPlayResolver >> initializeWith: aGame [
 ]
 
 { #category : #resolving }
-CardPlayResolver >> resolve: aCardPlayed by: aPlayer targetting: anotherPalyer [
+CardPlayResolver >> resolve: aCardPlayed by: aPlayer targetting: anotherPlayer [
 
 	cardPlayer := aPlayer.
-	cardTarget := anotherPalyer.
+	cardTarget := anotherPlayer.
 	aCardPlayed uses: self
 ]
 
 { #category : #resolving }
 CardPlayResolver >> resolveACancellationCardPlay: aCard [
 
-	"game cancelTheEffectOf: cardTarget."
-	cardTarget cancelEffectUsing:self.
+	cardTarget cancelEffectUsing: self.
+	lastCardPlayed := aCard.
+	game removeFromHand: aCard to: cardPlayer
+]
+
+{ #category : #resolving }
+CardPlayResolver >> resolveADoubleCardPlay: aCard [
+
+	game extraTurnFor: cardTarget.
+	lastCardPlayed := aCard.
+	game removeFromHand: aCard to: cardPlayer
+]
+
+{ #category : #resolving }
+CardPlayResolver >> resolveAFreedomCardPlay: aCard [
+
+	game escapeJailFor: cardPlayer.
 	lastCardPlayed := aCard.
 	game removeFromHand: aCard to: cardPlayer
 ]
@@ -72,13 +89,28 @@ CardPlayResolver >> resolveARepeatCardPlay: aCard [
 ]
 
 { #category : #resolving }
-CardPlayResolver >> resolveAnAccelerationCardPlay:aCard [
-	
-	
+CardPlayResolver >> resolveAReverseCardPlay: aCard [
+
+	game reverseTurns.
+	lastCardPlayed := aCard.
+	game removeFromHand: aCard to: cardPlayer
+]
+
+{ #category : #resolving }
+CardPlayResolver >> resolveASkipCardPlay: aCard [
+
+	game skipTurnFor: cardTarget.
+	lastCardPlayed := aCard.
+	game removeFromHand: aCard to: cardPlayer
+]
+
+{ #category : #resolving }
+CardPlayResolver >> resolveAnAccelerationCardPlay: aCard [
+
 	game assertIsTurnOf: cardPlayer.
 	game applyToAllSpaceShips: aCard.
 	lastCardPlayed := aCard.
-	game removeFromHand: aCard to: cardPlayer.
+	game removeFromHand: aCard to: cardPlayer
 ]
 
 { #category : #resolving }

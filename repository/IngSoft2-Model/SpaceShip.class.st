@@ -5,10 +5,11 @@ Class {
 		'name',
 		'position',
 		'lap',
-		'turnsToLose',
-		'needsToThrow',
 		'ally',
-		'fuelTank'
+		'fuelTank',
+		'modifiedTurns',
+		'needsToThrowToEscapeJail',
+		'needsToThrowToEscapeHyperGravity'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -38,19 +39,37 @@ SpaceShip >> applyPenaltyForEmptyFuelTank [
 
 	position := 1.
 	fuelTank refuelToMax.
-	self losesTurns: 2
+	self turnModifier: -2
 ]
 
 { #category : #playing }
-SpaceShip >> changeRollingResultNeededToMove: aNumber [
+SpaceShip >> changeRollingResultNeededToEscapeHiperGravity: aNumber [
 
-	needsToThrow := aNumber
+	needsToThrowToEscapeHyperGravity := aNumber
+]
+
+{ #category : #playing }
+SpaceShip >> changeRollingResultNeededToEscapeJail: aNumber [
+
+	needsToThrowToEscapeJail := aNumber
 ]
 
 { #category : #playing }
 SpaceShip >> decreaseFuelBy: amountOfFuel [
 
 	fuelTank decreaseFuelBy: amountOfFuel
+]
+
+{ #category : #playing }
+SpaceShip >> escapeJail [
+
+	needsToThrowToEscapeJail := 0
+]
+
+{ #category : #playing }
+SpaceShip >> extraTurn [
+
+	self turnModifier: 1
 ]
 
 { #category : #accessing }
@@ -87,8 +106,9 @@ SpaceShip >> initialize: aName withMaxFuel: anAmount [
 	name := aName.
 	position := 1.
 	lap := 1.
-	turnsToLose := 0.
-	needsToThrow := 0.
+	modifiedTurns := 0.
+	needsToThrowToEscapeHyperGravity := 0.
+	needsToThrowToEscapeJail := 0.
 	fuelTank := FuelTank withMaxFuel: anAmount.
 	ally := nil
 ]
@@ -105,16 +125,17 @@ SpaceShip >> lap [
 	^ lap
 ]
 
-{ #category : #playing }
-SpaceShip >> losesTurns: amountOfTurns [
+{ #category : #accessing }
+SpaceShip >> modifiedTurns [
 
-	turnsToLose := turnsToLose + amountOfTurns
+	^ modifiedTurns
 ]
 
 { #category : #playing }
 SpaceShip >> movePositionBy: aNumber lapBy: quantityOfLapsToMove neededFuel: aFuelAmount [
 
-	needsToThrow = 0 ifFalse: [ ^ self ].
+	(needsToThrowToEscapeHyperGravity = 0 and: [
+		 needsToThrowToEscapeJail = 0 ]) ifFalse: [ ^ self ].
 	self decreaseFuelBy: aFuelAmount.
 
 	fuelTank isEmpty
@@ -150,8 +171,12 @@ SpaceShip >> rollDiceUsing: aDiceRoller [
 
 	| rolledNumber |
 	rolledNumber := aDiceRoller roll.
-	(needsToThrow = 0 or: [ rolledNumber = needsToThrow ]) ifTrue: [
-		needsToThrow := 0 ].
+	((needsToThrowToEscapeHyperGravity = 0 or: [
+		  rolledNumber = needsToThrowToEscapeHyperGravity ]) and: [
+		 needsToThrowToEscapeJail = 0 or:
+			 rolledNumber = needsToThrowToEscapeJail ]) ifTrue: [
+		needsToThrowToEscapeHyperGravity := 0.
+		needsToThrowToEscapeJail := 0 ].
 	^ rolledNumber
 ]
 
@@ -164,12 +189,18 @@ SpaceShip >> setAllyToNil [
 { #category : #playing }
 SpaceShip >> skipTurn [
 
-	self losesTurns: 1.
+	self turnModifier: -1
+]
+
+{ #category : #playing }
+SpaceShip >> skipTurnToRefuel [
+
+	self turnModifier: -1.
 	fuelTank refuelToMax
 ]
 
-{ #category : #accessing }
-SpaceShip >> turnsToLose [
+{ #category : #playing }
+SpaceShip >> turnModifier: amountOfTurns [
 
-	^ turnsToLose
+	modifiedTurns := modifiedTurns + amountOfTurns
 ]

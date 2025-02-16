@@ -3,7 +3,10 @@ name: CI
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
       
 jobs:
   build:
