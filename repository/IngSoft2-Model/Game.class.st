@@ -84,6 +84,13 @@ Game >> assertIsTurnOf: spaceship [
 		Error signal: 'It is not your turn' ]
 ]
 
+{ #category : #testing }
+Game >> assignJailTo: aSpaceship [
+	
+	(spaceships detect: [ :spaceship | spaceship = aSpaceship ]) changeRollingResultNeededToEscapeJail: diceCollection maxRoll
+	
+]
+
 { #category : #asserting }
 Game >> assignRewardForMaxRollFor: aSpaceship [
 

@@ -36,6 +36,12 @@ EffectManager >> applyMoonwalkMoving: anAmountOfTiles notAffecting: aShip [
 ]
 
 { #category : #playing }
+EffectManager >> currentGame [
+
+	^ game
+]
+
+{ #category : #playing }
 EffectManager >> giveCardFromDeckTo: aSpaceship [
 
 	game giveCardFromDeckTo: aSpaceship
