@@ -41,6 +41,12 @@ EffectManager >> giveCardFromDeckTo: aSpaceship [
 	game giveCardFromDeckTo: aSpaceship
 ]
 
+{ #category : #playing }
+EffectManager >> hyperSpaceJump: aSpaceShip by: anAmountOfTiles [
+
+	board jumpForward: aSpaceShip by: anAmountOfTiles
+]
+
 { #category : #initialization }
 EffectManager >> initializeIn: aGame using: aBoard affecting: someShips [
 
@@ -66,12 +72,6 @@ EffectManager >> move: aSpaceship jumping: aQuantityOfParsec [
 EffectManager >> moveAllSpaceshipsToFirstPosition [
 
 	board moveAllSpaceshipsToFirstPosition: spaceships
-]
-
-{ #category : #playing }
-EffectManager >> moveWithoutFuel: aSpaceShip by: anAmountOfTiles [
-
-	board moveWithoutFuel: aSpaceShip by: anAmountOfTiles
 ]
 
 { #category : #playing }

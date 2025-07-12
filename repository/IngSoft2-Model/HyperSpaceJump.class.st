@@ -10,5 +10,5 @@ Class {
 { #category : #playing }
 HyperSpaceJump >> triggeredBy: aSpaceship on: anEffectManager [
 
-	anEffectManager moveWithoutFuel: aSpaceship by: 4
+	anEffectManager hyperSpaceJump: aSpaceship by: 4
 ]

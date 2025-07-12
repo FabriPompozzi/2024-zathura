@@ -82,6 +82,24 @@ Board >> initializeOf: aTileCollection withDistance: aUnitOfDistance [
 ]
 
 { #category : #accessing }
+Board >> jumpForward: aSpaceship by: anAmountOfTilesToMove [
+
+	| positionToMove lapsMoved newLap |
+	newLap := self
+		          calculateLapToMoveWhen: aSpaceship
+		          advances: anAmountOfTilesToMove.
+	lapsMoved := (newLap min: laps + 1 max: 1) - aSpaceship lap.
+	positionToMove := self
+		                  calculatePositionToMoveWhen: aSpaceship
+		                  moves: anAmountOfTilesToMove.
+
+	aSpaceship
+		hyperSpaceJumpToTile: positionToMove
+		lapBy: lapsMoved
+		
+]
+
+{ #category : #accessing }
 Board >> laps [
 
 	^ laps
@@ -124,22 +142,4 @@ Board >> moveAllSpaceshipsToFirstPosition: allSpaceShips [
 			movePositionBy: 1 - spaceship position
 			lapBy: 0
 			neededFuel: 0 ]
-]
-
-{ #category : #accessing }
-Board >> moveWithoutFuel: aSpaceship by: anAmountOfTilesToMove [
-
-	| positionToMove lapsMoved newLap |
-	newLap := self
-		          calculateLapToMoveWhen: aSpaceship
-		          advances: anAmountOfTilesToMove.
-	lapsMoved := (newLap min: laps + 1 max: 1) - aSpaceship lap.
-	positionToMove := self
-		                  calculatePositionToMoveWhen: aSpaceship
-		                  moves: anAmountOfTilesToMove.
-
-	aSpaceship
-		movePositionBy: positionToMove
-		lapBy: lapsMoved
-		neededFuel: 0
 ]

@@ -100,6 +100,12 @@ SpaceShip >> handleEmptyFuelTankForMovePositionBy: aNumber lapBy: quantityOfLaps
 			lapBy: quantityOfLapsToMove ]
 ]
 
+{ #category : #playing }
+SpaceShip >> hyperSpaceJumpToTile: aNumber lapBy: quantityOfLapsToMove [
+
+	self moveToNextPositionBy: aNumber lapBy: quantityOfLapsToMove
+]
+
 { #category : #initialization }
 SpaceShip >> initialize: aName withMaxFuel: anAmount [
 
