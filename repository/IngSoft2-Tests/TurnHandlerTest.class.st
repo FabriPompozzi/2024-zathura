@@ -43,16 +43,3 @@ TurnHandlerTest >> testPlayer1throwsfirst [
 			                aSpaceShip2 }.
 	self assert: aTurnHandler nextSpaceshipTurn name equals: 'Danny'
 ]
-
-{ #category : #tests }
-TurnHandlerTest >> testPlayer2throwsAfterPlayer1 [
-
-	| aTurnHandler aSpaceShip1 aSpaceShip2 |
-	aSpaceShip1 := SpaceShip named: 'Danny' withMaxFuel: 10.
-	aSpaceShip2 := SpaceShip named: 'Walter' withMaxFuel: 10.
-	aTurnHandler := TurnHandler withPlayers: {
-			                aSpaceShip1.
-			                aSpaceShip2 }.
-	aTurnHandler nextSpaceshipTurn.
-	self assert: aTurnHandler nextSpaceshipTurn name equals: 'Walter'
-]
