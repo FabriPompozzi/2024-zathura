@@ -666,7 +666,7 @@ SecondVersionTest >> testSV15SpaceshipEscapesOfTheHyperGravityEffectWhenItGetsAC
 
 	| aGame aBoard aDie1 someSpaceships |
 	someSpaceships := { 'Danny'. 'Walter' }.
-	aDie1 := LoadedDie of: { 5. 5. 4. 4. 6 }.
+	aDie1 := LoadedDie of: { 5. 5. 4. 4. 5. 5. 15 }.
 	aBoard := Board
 		          of: {
 				          Null new.
@@ -700,7 +700,10 @@ SecondVersionTest >> testSV15SpaceshipEscapesOfTheHyperGravityEffectWhenItGetsAC
 	aGame playNextTurn.
 
 	self assert: (aGame spaceshipCalled: 'Danny') position equals: 2.
-	self assert: (aGame spaceshipCalled: 'Walter') position equals: 2
+	self assert: (aGame spaceshipCalled: 'Walter') position equals: 2.
+
+	aGame playNextTurn.
+	self assert: (aGame spaceshipCalled: 'Danny') position equals: 7
 ]
 
 { #category : #tests }

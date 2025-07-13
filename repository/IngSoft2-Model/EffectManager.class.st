@@ -5,7 +5,8 @@ Class {
 		'game',
 		'board',
 		'spaceships',
-		'lastEffectApplied'
+		'lastEffectApplied',
+		'restrictionsBySpaceship'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -14,6 +15,16 @@ Class {
 EffectManager class >> usedIn: aGame with: aBoard affecting: someShips [
 
 	^ self new initializeIn: aGame using: aBoard affecting: someShips
+]
+
+{ #category : #playing }
+EffectManager >> addRestriction: aRestriction to: aSpaceship [
+
+	| current |
+	current := self restrictionsFor: aSpaceship.
+	restrictionsBySpaceship
+		at: aSpaceship
+		put: (current copyWith: aRestriction)
 ]
 
 { #category : #initialization }
@@ -36,6 +47,12 @@ EffectManager >> applyMoonwalkMoving: anAmountOfTiles notAffecting: aShip [
 ]
 
 { #category : #playing }
+EffectManager >> escapeJailFor: aSpaceship [
+	
+	self removeRestriction: JailRestriction from: aSpaceship
+]
+
+{ #category : #playing }
 EffectManager >> giveCardFromDeckTo: aSpaceship [
 
 	game giveCardFromDeckTo: aSpaceship
@@ -53,7 +70,8 @@ EffectManager >> initializeIn: aGame using: aBoard affecting: someShips [
 	game := aGame.
 	board := aBoard.
 	spaceships := someShips.
-	lastEffectApplied := Null create
+	lastEffectApplied := Null create.
+	restrictionsBySpaceship :=Dictionary new.
 ]
 
 { #category : #playing }
@@ -75,7 +93,22 @@ EffectManager >> moveAllSpaceshipsToFirstPosition [
 ]
 
 { #category : #playing }
+EffectManager >> removeRestriction: aRestriction from: aSpaceship [
+
+	| current updated |
+	current := self restrictionsFor: aSpaceship.
+	updated := current reject: [ :each | each = aRestriction ].
+	restrictionsBySpaceship at: aSpaceship put: updated
+]
+
+{ #category : #playing }
 EffectManager >> repeatLastEffectAppliedOn: aSpaceship [
 
 	lastEffectApplied triggeredBy: aSpaceship on: self
+]
+
+{ #category : #playing }
+EffectManager >> restrictionsFor: aSpaceship [
+
+	^ restrictionsBySpaceship at: aSpaceship ifAbsent: [ #(  ) ]
 ]

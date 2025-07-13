@@ -96,6 +96,13 @@ Game >> assignRewardForMaxRollFor: aSpaceship [
 		ifFalse: [ aSpaceship fuelTank decreaseFuelBy: 1 ]
 ]
 
+{ #category : #asserting }
+Game >> canSpaceship: aSpaceship moveWith: aRollingResult [
+
+	^ (effectManager restrictionsFor: aSpaceship) allSatisfy: [ :r |
+		  r allowsMovementTo: aSpaceship withRoll: aRollingResult ]
+]
+
 { #category : #accessing }
 Game >> cancelTheEffectOf: aPermanentCard [
 
@@ -116,6 +123,17 @@ Game >> cardsHandOf: aSpaceship [
 	^ spaceshipCardHandler
 ]
 
+{ #category : #accessing }
+Game >> checkRestrictionsToRemoveFor: aSpaceship with: aRollingResult [
+
+	| restrictionsToRemove |
+	restrictionsToRemove := (effectManager restrictionsFor: aSpaceship)
+		                        select: [ :r |
+		                        r isClearedBy: aRollingResult ].
+	restrictionsToRemove do: [ :r |
+		effectManager removeRestriction: r from: aSpaceship ]
+]
+
 { #category : #asserting }
 Game >> endGameIfPossible [
 
@@ -125,7 +143,14 @@ Game >> endGameIfPossible [
 { #category : #playing }
 Game >> escapeJailFor: aSpaceshipName [
 
-	(self spaceshipCalled: aSpaceshipName) escapeJail
+	| currentSpaceship jailRestrictions |
+	currentSpaceship := self spaceshipCalled: aSpaceshipName.
+
+	jailRestrictions := (effectManager restrictionsFor: currentSpaceship)
+		                    select: [ :r | r isRemovableByFreedomCard ].
+
+	jailRestrictions do: [ :r |
+		effectManager removeRestriction: r from: currentSpaceship ]
 ]
 
 { #category : #playing }
@@ -180,10 +205,13 @@ Game >> playNextTurn [
 	| rollingResult spaceshipTurn rollModifier |
 	self hasEnded ifTrue: [ Error signal: 'Game has already ended' ].
 	spaceshipTurn := turnHandler nextSpaceshipTurn.
-	rollingResult := spaceshipTurn rollDiceUsing: diceCollection.
+	rollingResult := diceCollection roll.
 	rollingResult = diceCollection maxRoll ifTrue: [
 		self assignRewardForMaxRollFor: spaceshipTurn ].
 	rollModifier := self rollModifierFor: spaceshipTurn.
+	(self canSpaceship: spaceshipTurn moveWith: rollingResult)
+		ifFalse: [ ^self ].
+	self checkRestrictionsToRemoveFor: spaceshipTurn with: rollingResult.
 	board move: spaceshipTurn by: rollingResult + rollModifier.
 	effectManager applyEffectOnLandingShip: spaceshipTurn.
 	self endGameIfPossible

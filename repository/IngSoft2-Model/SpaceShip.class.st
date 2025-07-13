@@ -7,9 +7,7 @@ Class {
 		'lap',
 		'ally',
 		'fuelTank',
-		'modifiedTurns',
-		'needsToThrowToEscapeJail',
-		'needsToThrowToEscapeHyperGravity'
+		'modifiedTurns'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -43,27 +41,9 @@ SpaceShip >> applyPenaltyForEmptyFuelTank [
 ]
 
 { #category : #playing }
-SpaceShip >> changeRollingResultNeededToEscapeHiperGravity: aNumber [
-
-	needsToThrowToEscapeHyperGravity := aNumber
-]
-
-{ #category : #playing }
-SpaceShip >> changeRollingResultNeededToEscapeJail: aNumber [
-
-	needsToThrowToEscapeJail := aNumber
-]
-
-{ #category : #playing }
 SpaceShip >> decreaseFuelBy: amountOfFuel [
 
 	fuelTank decreaseFuelBy: amountOfFuel
-]
-
-{ #category : #playing }
-SpaceShip >> escapeJail [
-
-	needsToThrowToEscapeJail := 0
 ]
 
 { #category : #playing }
@@ -113,8 +93,6 @@ SpaceShip >> initialize: aName withMaxFuel: anAmount [
 	position := 1.
 	lap := 1.
 	modifiedTurns := 0.
-	needsToThrowToEscapeHyperGravity := 0.
-	needsToThrowToEscapeJail := 0.
 	fuelTank := FuelTank withMaxFuel: anAmount.
 	ally := nil
 ]
@@ -140,8 +118,6 @@ SpaceShip >> modifiedTurns [
 { #category : #playing }
 SpaceShip >> movePositionBy: aNumber lapBy: quantityOfLapsToMove neededFuel: aFuelAmount [
 
-	(needsToThrowToEscapeHyperGravity = 0 and: [
-		 needsToThrowToEscapeJail = 0 ]) ifFalse: [ ^ self ].
 	self decreaseFuelBy: aFuelAmount.
 
 	fuelTank isEmpty
@@ -170,20 +146,6 @@ SpaceShip >> name [
 SpaceShip >> position [
 
 	^ position
-]
-
-{ #category : #playing }
-SpaceShip >> rollDiceUsing: aDiceRoller [
-
-	| rolledNumber |
-	rolledNumber := aDiceRoller roll.
-	((needsToThrowToEscapeHyperGravity = 0 or: [
-		  rolledNumber = needsToThrowToEscapeHyperGravity ]) and: [
-		 needsToThrowToEscapeJail = 0 or:
-			 rolledNumber = needsToThrowToEscapeJail ]) ifTrue: [
-		needsToThrowToEscapeHyperGravity := 0.
-		needsToThrowToEscapeJail := 0 ].
-	^ rolledNumber
 ]
 
 { #category : #asserting }
