@@ -2,21 +2,21 @@ Class {
 	#name : #ExtraTurnState,
 	#superclass : #TurnState,
 	#instVars : [
-		'turnsRemaining'
+		'turnsLeft'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #playing }
 ExtraTurnState >> addExtraTurns: aNumber [
-turnsRemaining := turnsRemaining + aNumber
+turnsLeft := turnsLeft + aNumber
 ]
 
 { #category : #playing }
 ExtraTurnState >> addTurnPenalty: aNumber [
 
 	| newBalance |
-	newBalance := turnsRemaining - aNumber.
+	newBalance := turnsLeft - aNumber.
 
 	^ newBalance = 0
 		  ifTrue: [ NormalTurnState new ]
@@ -34,14 +34,14 @@ ExtraTurnState >> canPlay [
 { #category : #initialization }
 ExtraTurnState >> initializeWith: aNumber [
 
-	turnsRemaining := aNumber
+	turnsLeft := aNumber
 ]
 
 { #category : #accessing }
 ExtraTurnState >> nextStateAfterTurn: aSpaceship [
 
-	turnsRemaining := turnsRemaining - 1.
-	^ turnsRemaining = 0
+	turnsLeft := turnsLeft - 1.
+	^ turnsLeft = 0
 		  ifTrue: [ NormalTurnState new ]
 		  ifFalse: [ self ]
 ]
@@ -50,4 +50,10 @@ ExtraTurnState >> nextStateAfterTurn: aSpaceship [
 ExtraTurnState >> retainsTurn [
 
 	^ true
+]
+
+{ #category : #accessing }
+ExtraTurnState >> turnsLeft [
+
+	^ turnsLeft
 ]

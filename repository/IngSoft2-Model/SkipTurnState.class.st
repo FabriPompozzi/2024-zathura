@@ -45,3 +45,9 @@ SkipTurnState >> nextStateAfterTurn: aSpaceship [
 	turnsLeft := turnsLeft - 1.
 	^ self
 ]
+
+{ #category : #accessing }
+SkipTurnState >> turnsLeft [
+
+	^ turnsLeft
+]
