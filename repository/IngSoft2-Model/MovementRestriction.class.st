@@ -7,7 +7,7 @@ Class {
 { #category : #playing }
 MovementRestriction >> allowsMovementTo: aSpaceship withRoll: aRoll [
 
-	^ true
+	self subclassResponsibility
 ]
 
 { #category : #asserting }

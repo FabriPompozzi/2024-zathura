@@ -88,6 +88,19 @@ SpaceShipTest >> testASpaceshipCorrectlyChangesStatesAfterLosingTurns [
 ]
 
 { #category : #running }
+SpaceShipTest >> testASpaceshipCorrectlyChangesStatesAfterLosingTurnsAfterBeingInExtraTurnState [
+
+	| aSpaceShip |
+	aSpaceShip := SpaceShip named: 'Danny' withMaxFuel: 10.
+	self assert: (aSpaceShip currentTurnState isKindOf: NormalTurnState).
+	aSpaceShip addExtraTurns:1.
+	self assert: (aSpaceShip currentTurnState isKindOf: ExtraTurnState).
+	aSpaceShip loseTurns: 2.
+	self assert: (aSpaceShip currentTurnState isKindOf: SkipTurnState)
+
+]
+
+{ #category : #running }
 SpaceShipTest >> testASpaceshipIsMovedOnePosition [
 
 	| aSpaceShip |
