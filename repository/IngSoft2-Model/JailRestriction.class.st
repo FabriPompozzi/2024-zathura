@@ -26,6 +26,12 @@ JailRestriction >> initializeWith: aRequiredValue [
 ]
 
 { #category : #asserting }
+JailRestriction >> isClearedBy: aRoll [
+
+	^ self allowsMovementTo: nil withRoll: aRoll
+]
+
+{ #category : #asserting }
 JailRestriction >> isRemovableByFreedomCard [
 
 	^ true

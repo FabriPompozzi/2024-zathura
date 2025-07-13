@@ -24,3 +24,9 @@ HyperGravityRestriction >> initializeWith: aRequiredValue [
 
 	requiredValue := aRequiredValue
 ]
+
+{ #category : #asserting }
+HyperGravityRestriction >> isClearedBy: aRoll [
+
+	^ self allowsMovementTo: nil withRoll: aRoll
+]
