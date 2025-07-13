@@ -7,7 +7,8 @@ Class {
 		'lap',
 		'ally',
 		'fuelTank',
-		'modifiedTurns'
+		'modifiedTurns',
+		'turnState'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -26,6 +27,12 @@ SpaceShip class >> named: aName withMaxFuel: anAmount [
 	^ self new initialize: aName withMaxFuel: anAmount
 ]
 
+{ #category : #playing }
+SpaceShip >> addExtraTurns: aNumber [
+
+	turnState := turnState addExtraTurns: aNumber
+]
+
 { #category : #accessing }
 SpaceShip >> ally [
 
@@ -37,19 +44,25 @@ SpaceShip >> applyPenaltyForEmptyFuelTank [
 
 	position := 1.
 	fuelTank refuelToMax.
-	self turnModifier: -2
+	self loseTurns: 2
+]
+
+{ #category : #accessing }
+SpaceShip >> canPlay [
+
+	^ turnState canPlay
+]
+
+{ #category : #accessing }
+SpaceShip >> currentTurnState [
+
+	^ turnState
 ]
 
 { #category : #playing }
 SpaceShip >> decreaseFuelBy: amountOfFuel [
 
 	fuelTank decreaseFuelBy: amountOfFuel
-]
-
-{ #category : #playing }
-SpaceShip >> extraTurn [
-
-	self turnModifier: 1
 ]
 
 { #category : #accessing }
@@ -92,7 +105,7 @@ SpaceShip >> initialize: aName withMaxFuel: anAmount [
 	name := aName.
 	position := 1.
 	lap := 1.
-	modifiedTurns := 0.
+	turnState := NormalTurnState new.
 	fuelTank := FuelTank withMaxFuel: anAmount.
 	ally := nil
 ]
@@ -107,6 +120,12 @@ SpaceShip >> isAlliedWith: anotherSpaceship [
 SpaceShip >> lap [
 
 	^ lap
+]
+
+{ #category : #playing }
+SpaceShip >> loseTurns: aNumber [
+
+	turnState := turnState addTurnPenalty: aNumber
 ]
 
 { #category : #accessing }
@@ -154,16 +173,21 @@ SpaceShip >> setAllyToNil [
 	ally := nil
 ]
 
+{ #category : #accessing }
+SpaceShip >> shouldRetainTurn [
+	^ turnState retainsTurn
+]
+
 { #category : #playing }
 SpaceShip >> skipTurn [
 
-	self turnModifier: -1
+	self loseTurns:1
 ]
 
 { #category : #playing }
 SpaceShip >> skipTurnToRefuel [
 
-	self turnModifier: -1.
+	self loseTurns: 1.
 	fuelTank refuelToMax
 ]
 
@@ -171,4 +195,10 @@ SpaceShip >> skipTurnToRefuel [
 SpaceShip >> turnModifier: amountOfTurns [
 
 	modifiedTurns := modifiedTurns + amountOfTurns
+]
+
+{ #category : #asserting }
+SpaceShip >> updateTurnState [
+
+	turnState := turnState nextStateAfterTurn: self
 ]

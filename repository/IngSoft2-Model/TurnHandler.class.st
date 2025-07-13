@@ -38,17 +38,11 @@ TurnHandler >> initializeWithSpaceships: someSpaceShips [
 TurnHandler >> nextSpaceshipTurn [
 
 	| spaceshipTurn |
-	spaceshipTurn := self nextTurn.
-	[ spaceshipTurn modifiedTurns < 0 ] whileTrue: [
-		spaceshipTurn turnModifier: 1.
-		self changeTurns.
-		spaceshipTurn := self nextTurn ].
-	[ spaceshipTurn modifiedTurns > 0 ] whileTrue: [
-		spaceshipTurn turnModifier: -1.
-		^ spaceshipTurn ].
-
-	self changeTurns.
-	^ spaceshipTurn
+	[
+	spaceshipTurn := spaceships first.
+	spaceshipTurn canPlay ifTrue: [ ^ spaceshipTurn ].
+	spaceshipTurn updateTurnState.
+	self changeTurns ] repeat
 ]
 
 { #category : #playing }
@@ -69,4 +63,11 @@ TurnHandler >> reverseTurns [
 TurnHandler >> spaceships [
 
 	^ spaceships
+]
+
+{ #category : #playing }
+TurnHandler >> updateTurnStateFor: aSpaceship [
+
+	aSpaceship shouldRetainTurn ifFalse: [ self changeTurns ].
+	aSpaceship updateTurnState
 ]

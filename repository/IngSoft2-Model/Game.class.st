@@ -156,7 +156,7 @@ Game >> escapeJailFor: aSpaceshipName [
 { #category : #playing }
 Game >> extraTurnFor: aSpaceship [
 
-	(self spaceshipCalled: aSpaceship) extraTurn
+	(self spaceshipCalled: aSpaceship) addExtraTurns: 1
 ]
 
 { #category : #playing }
@@ -209,6 +209,7 @@ Game >> playNextTurn [
 	rollingResult = diceCollection maxRoll ifTrue: [
 		self assignRewardForMaxRollFor: spaceshipTurn ].
 	rollModifier := self rollModifierFor: spaceshipTurn.
+		turnHandler updateTurnStateFor: spaceshipTurn.
 	(self canSpaceship: spaceshipTurn moveWith: rollingResult)
 		ifFalse: [ ^self ].
 	self checkRestrictionsToRemoveFor: spaceshipTurn with: rollingResult.
