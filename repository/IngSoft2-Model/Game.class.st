@@ -99,8 +99,11 @@ Game >> assignRewardForMaxRollFor: aSpaceship [
 { #category : #asserting }
 Game >> canSpaceship: aSpaceship moveWith: aRollingResult [
 
-	^ (effectManager restrictionsFor: aSpaceship) allSatisfy: [ :r |
-		  r allowsMovementTo: aSpaceship withRoll: aRollingResult ]
+	^ (effectManager restrictionsFor: aSpaceship) allSatisfy: [
+		  :activeRestrictions |
+		  activeRestrictions
+			  allowsMovementTo: aSpaceship
+			  withRoll: aRollingResult ]
 ]
 
 { #category : #accessing }
@@ -128,10 +131,10 @@ Game >> checkRestrictionsToRemoveFor: aSpaceship with: aRollingResult [
 
 	| restrictionsToRemove |
 	restrictionsToRemove := (effectManager restrictionsFor: aSpaceship)
-		                        select: [ :r |
-		                        r isClearedBy: aRollingResult ].
-	restrictionsToRemove do: [ :r |
-		effectManager removeRestriction: r from: aSpaceship ]
+		                        select: [ :restriction |
+		                        restriction isClearedBy: aRollingResult ].
+	restrictionsToRemove do: [ :restriction |
+		effectManager removeRestriction: restriction from: aSpaceship ]
 ]
 
 { #category : #asserting }
@@ -147,10 +150,11 @@ Game >> escapeJailFor: aSpaceshipName [
 	currentSpaceship := self spaceshipCalled: aSpaceshipName.
 
 	jailRestrictions := (effectManager restrictionsFor: currentSpaceship)
-		                    select: [ :r | r isRemovableByFreedomCard ].
+		                    select: [ :restriction |
+		                    restriction isRemovableByFreedomCard ].
 
-	jailRestrictions do: [ :r |
-		effectManager removeRestriction: r from: currentSpaceship ]
+	jailRestrictions do: [ :restriction |
+		effectManager removeRestriction: restriction from: currentSpaceship ]
 ]
 
 { #category : #playing }
