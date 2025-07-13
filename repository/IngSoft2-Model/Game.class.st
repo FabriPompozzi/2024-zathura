@@ -209,9 +209,9 @@ Game >> playNextTurn [
 	rollingResult = diceCollection maxRoll ifTrue: [
 		self assignRewardForMaxRollFor: spaceshipTurn ].
 	rollModifier := self rollModifierFor: spaceshipTurn.
-		turnHandler updateTurnStateFor: spaceshipTurn.
-	(self canSpaceship: spaceshipTurn moveWith: rollingResult)
-		ifFalse: [ ^self ].
+	turnHandler updateTurnStateFor: spaceshipTurn.
+	(self canSpaceship: spaceshipTurn moveWith: rollingResult) ifFalse: [
+		^ self ].
 	self checkRestrictionsToRemoveFor: spaceshipTurn with: rollingResult.
 	board move: spaceshipTurn by: rollingResult + rollModifier.
 	effectManager applyEffectOnLandingShip: spaceshipTurn.

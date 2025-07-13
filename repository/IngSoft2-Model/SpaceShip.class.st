@@ -7,7 +7,6 @@ Class {
 		'lap',
 		'ally',
 		'fuelTank',
-		'modifiedTurns',
 		'turnState'
 	],
 	#category : #'IngSoft2-Model'
@@ -128,12 +127,6 @@ SpaceShip >> loseTurns: aNumber [
 	turnState := turnState addTurnPenalty: aNumber
 ]
 
-{ #category : #accessing }
-SpaceShip >> modifiedTurns [
-
-	^ modifiedTurns
-]
-
 { #category : #playing }
 SpaceShip >> movePositionBy: aNumber lapBy: quantityOfLapsToMove neededFuel: aFuelAmount [
 
@@ -175,13 +168,14 @@ SpaceShip >> setAllyToNil [
 
 { #category : #accessing }
 SpaceShip >> shouldRetainTurn [
+
 	^ turnState retainsTurn
 ]
 
 { #category : #playing }
 SpaceShip >> skipTurn [
 
-	self loseTurns:1
+	self loseTurns: 1
 ]
 
 { #category : #playing }
@@ -189,12 +183,6 @@ SpaceShip >> skipTurnToRefuel [
 
 	self loseTurns: 1.
 	fuelTank refuelToMax
-]
-
-{ #category : #playing }
-SpaceShip >> turnModifier: amountOfTurns [
-
-	modifiedTurns := modifiedTurns + amountOfTurns
 ]
 
 { #category : #asserting }

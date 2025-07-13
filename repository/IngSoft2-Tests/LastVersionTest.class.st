@@ -16,7 +16,7 @@ LastVersionTest >> testLV01PlayerGetStuckOnJailTile [
 				          Null create.
 				          Null create.
 				          Null create.
-				          (Jail needsToThrow: aDie1 maxRoll).
+				          (Jail usingDice: aDie1).
 				          Null create.
 				          Null create.
 				          Null create }
@@ -48,7 +48,7 @@ LastVersionTest >> testLV02PlayerCanLeaveJailWhenRollingTheMaxAmount [
 		          of: {
 				          Null create.
 				          Null create.
-				          (Jail needsToThrow: aDie1 maxRoll).
+				          (Jail usingDice: aDie1).
 				          Null create.
 				          Null create.
 				          Null create.
@@ -90,7 +90,7 @@ LastVersionTest >> testLV03PlayerCanLeaveWhenRollingTheMaxOnADiceRoller [
 				          Null create.
 				          Null create.
 				          Null create.
-				          (Jail needsToThrow: aDiceRoller maxRoll).
+				          (Jail usingDice: aDiceRoller).
 				          Null create.
 				          Null create.
 				          Null create.
@@ -128,7 +128,7 @@ LastVersionTest >> testLV04PlayerCanLeaveJailWhenUsingFreedomCard [
 				          Null create.
 				          Null create.
 				          Null create.
-				          (Jail needsToThrow: aDie1 maxRoll).
+				          (Jail usingDice: aDie1).
 				          Null create.
 				          Null create.
 				          Null create }
@@ -715,8 +715,7 @@ LastVersionTest >> testLV15RandomBoardDistributionWithNewTilesAndRandomDice [
 				                       with: AtomicBomb new
 				                       and: 0.02).
 			                      (ProbabilityEffectTile
-				                       with:
-				                       (Jail needsToThrow: aDiceRoller maxRoll)
+				                       with: (Jail usingDice: aDiceRoller)
 				                       and: 0.05).
 			                      (ProbabilityEffectTile
 				                       with: HyperSpaceJump new

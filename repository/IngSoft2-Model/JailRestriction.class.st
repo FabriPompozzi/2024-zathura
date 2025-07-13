@@ -16,7 +16,7 @@ JailRestriction class >> needsToThrow: aNumber [
 { #category : #playing }
 JailRestriction >> allowsMovementTo: aSpaceship withRoll: aRoll [
 
-	^ aRoll = requiredValue 
+	^ aRoll = requiredValue
 ]
 
 { #category : #initialization }

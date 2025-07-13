@@ -22,5 +22,7 @@ HyperGravity >> initializedWith: aNumber [
 { #category : #playing }
 HyperGravity >> triggeredBy: aSpaceship on: anEffectManager [
 
-	anEffectManager addRestriction: (HyperGravityRestriction needsToThrow: needsToThrow) to: aSpaceship 
+	anEffectManager
+		addRestriction: (HyperGravityRestriction needsToThrow: needsToThrow)
+		to: aSpaceship
 ]

@@ -7,7 +7,7 @@ Class {
 { #category : #playing }
 NormalTurnState >> addExtraTurns: aNumber [
 
-	^ ExtraTurnState new initializeWith: aNumber.
+	^ ExtraTurnState new initializeWith: aNumber
 ]
 
 { #category : #playing }

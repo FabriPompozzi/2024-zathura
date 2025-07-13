@@ -53,7 +53,7 @@ TurnHandler >> nextTurn [
 	^ spaceshipTurn
 ]
 
-{ #category : #accessing }
+{ #category : #playing }
 TurnHandler >> reverseTurns [
 
 	spaceships := spaceships reverse

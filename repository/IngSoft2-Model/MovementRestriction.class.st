@@ -14,8 +14,6 @@ MovementRestriction >> allowsMovementTo: aSpaceship withRoll: aRoll [
 MovementRestriction >> isClearedBy: aCondition [
 
 	self subclassResponsibility
-
-	
 ]
 
 { #category : #asserting }

@@ -8,9 +8,9 @@ Class {
 }
 
 { #category : #'instance creation' }
-Jail class >> needsToThrow: aRollingResult [
+Jail class >> usingDice: someDice [
 
-	^ self new initializedWith: aRollingResult
+	^ self new initializedWith: someDice maxRoll
 ]
 
 { #category : #initialization }
@@ -22,5 +22,7 @@ Jail >> initializedWith: aNumber [
 { #category : #playing }
 Jail >> triggeredBy: aSpaceship on: anEffectManager [
 
-	anEffectManager addRestriction: (JailRestriction needsToThrow: needsToThrow) to: aSpaceship 
+	anEffectManager
+		addRestriction: (JailRestriction needsToThrow: needsToThrow)
+		to: aSpaceship
 ]

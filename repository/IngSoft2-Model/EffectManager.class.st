@@ -48,7 +48,7 @@ EffectManager >> applyMoonwalkMoving: anAmountOfTiles notAffecting: aShip [
 
 { #category : #playing }
 EffectManager >> escapeJailFor: aSpaceship [
-	
+
 	self removeRestriction: JailRestriction from: aSpaceship
 ]
 
@@ -71,7 +71,7 @@ EffectManager >> initializeIn: aGame using: aBoard affecting: someShips [
 	board := aBoard.
 	spaceships := someShips.
 	lastEffectApplied := Null create.
-	restrictionsBySpaceship :=Dictionary new.
+	restrictionsBySpaceship := Dictionary new
 ]
 
 { #category : #playing }

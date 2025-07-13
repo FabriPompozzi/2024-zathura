@@ -9,7 +9,8 @@ Class {
 
 { #category : #playing }
 ExtraTurnState >> addExtraTurns: aNumber [
-turnsLeft := turnsLeft + aNumber
+
+	turnsLeft := turnsLeft + aNumber
 ]
 
 { #category : #playing }
